@@ -1,0 +1,28 @@
+docker/.env
+docker/data/
+
+# Archivos de configuración privada
+.env
+.env.*
+!.env.example
+
+# Datos de usuarios y canciones locales
+docker/data/
+
+# Música de terceros
+docker/src/audio/*
+!docker/src/audio/.gitkeep
+
+# Archivos temporales y copias
+*.zip
+*.bak
+*.backup
+*.log
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store
+
+# Dependencias
+node_modules/
+vendor/

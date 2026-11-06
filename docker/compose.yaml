@@ -1,0 +1,85 @@
+name: asociacion-jukebox-multiservicio
+
+services:
+
+  # SERVIDOR WEB: PHP + Apache
+  web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    ports:
+      - "127.0.0.1:8091:80"
+
+    volumes:
+      - ./src:/var/www/html
+      - ./data:/var/www/data
+
+    environment:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGDATABASE: jukebox_pg
+      PGUSER: jukebox
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+
+      MARIADB_HOST: mariadb
+      MARIADB_PORT: "3306"
+      MARIADB_DATABASE: jukebox_maria
+      MARIADB_USER: jukebox
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mariadb:
+        condition: service_healthy
+
+  # BASE DE DATOS POSTGRESQL
+  postgres:
+    image: postgres:17-bookworm
+
+    environment:
+      POSTGRES_DB: jukebox_pg
+      POSTGRES_USER: jukebox
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # BASE DE DATOS MARIADB
+  mariadb:
+    image: mariadb:11.4
+
+    environment:
+      MARIADB_DATABASE: jukebox_maria
+      MARIADB_USER: jukebox
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        - CMD
+        - healthcheck.sh
+        - --connect
+        - --innodb_initialized
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+# VOLÚMENES PERSISTENTES
+volumes:
+  postgres_data:
+  mariadb_data:

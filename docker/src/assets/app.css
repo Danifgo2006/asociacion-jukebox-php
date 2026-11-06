@@ -1,0 +1,909 @@
+
+/* ==========================================================
+   JUKEBOX NIGHTWAVE
+   DISEÑO COMPLETO: NEGRO + VERDE NEÓN
+   ========================================================== */
+
+:root {
+    color-scheme: dark;
+
+    --bg: #080d0f;
+    --panel: #111c1e;
+    --panel-raised: #192629;
+    --panel-soft: #0d1719;
+
+    --line: #294044;
+    --line-bright: #4a6464;
+
+    --accent: #c8fb5d;
+    --accent-hover: #deff8e;
+    --accent-ink: #17250a;
+
+    --teal: #65e8d1;
+    --text: #f3f8f5;
+    --text-soft: #bfd0cc;
+    --muted: #93a6a2;
+    --danger: #ff8496;
+
+    --shadow: 0 18px 55px rgba(0, 0, 0, 0.23);
+    --radius: 19px;
+    --radius-sm: 11px;
+
+    font-family: "Segoe UI", system-ui, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================
+   ESTILOS GENERALES
+   ========================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: var(--bg);
+    scroll-behavior: smooth;
+}
+
+body {
+    position: relative;
+    isolation: isolate;
+
+    width: min(1120px, calc(100% - 52px));
+    min-height: 100vh;
+
+    margin: 0 auto;
+    padding: 0 0 100px;
+
+    background: transparent !important;
+    color: var(--text) !important;
+
+    font-size: 15px;
+    line-height: 1.65;
+    letter-spacing: 0.005em;
+}
+
+/* Fondo ambiental */
+
+body::after {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse 600px 440px at 90% 5%,
+            rgba(143, 207, 68, 0.125),
+            transparent 72%
+        ),
+        radial-gradient(
+            ellipse 510px 440px at -9% 55%,
+            rgba(45, 154, 145, 0.10),
+            transparent 70%
+        ),
+        linear-gradient(
+            155deg,
+            #0b1215 0%,
+            #070b0d 62%,
+            #0b1312 100%
+        );
+}
+
+/* Cabecera del proyecto */
+
+body::before {
+    content: "◉  JUKEBOX   /   MUSIC STUDIO";
+
+    display: flex;
+    align-items: center;
+
+    min-height: 88px;
+    margin-bottom: 31px;
+
+    border-bottom: 1px solid rgba(199, 248, 113, 0.17);
+
+    color: var(--accent);
+
+    font-size: 0.79rem;
+    font-weight: 800;
+    letter-spacing: 0.20em;
+}
+
+main,
+.container,
+.wrapper {
+    width: 100%;
+    min-width: 0;
+}
+
+::selection {
+    color: #0b1712;
+    background: var(--accent);
+}
+
+/* ==========================================================
+   TIPOGRAFÍA
+   ========================================================== */
+
+h1,
+h2,
+h3,
+h4 {
+    margin-top: 0;
+
+    color: var(--text) !important;
+
+    line-height: 1.13;
+    letter-spacing: -0.045em;
+}
+
+h1 {
+    max-width: 850px;
+    margin: 10px 0 22px;
+
+    font-size: clamp(2.35rem, 5.2vw, 4rem);
+    font-weight: 800;
+}
+
+h2 {
+    margin-bottom: 19px;
+
+    font-size: clamp(1.38rem, 2.6vw, 1.95rem);
+    font-weight: 750;
+}
+
+h3 {
+    font-size: 1.16rem;
+}
+
+p {
+    margin: 0 0 18px;
+    color: var(--text-soft) !important;
+}
+
+strong,
+b {
+    color: var(--text);
+}
+
+small {
+    color: var(--muted);
+}
+
+/* Enlaces */
+
+a {
+    color: var(--accent);
+
+    text-decoration-color: rgba(200, 251, 93, 0.45);
+    text-underline-offset: 4px;
+
+    transition:
+        color 0.2s,
+        text-decoration-color 0.2s;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentColor;
+}
+
+/* ==========================================================
+   MENÚ DE NAVEGACIÓN
+   ========================================================== */
+
+nav,
+.navbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 5px 12px;
+
+    margin: 0 0 37px;
+    padding: 14px 17px;
+
+    border: 1px solid var(--line);
+    border-radius: 15px;
+
+    background: rgba(22, 35, 38, 0.84);
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+nav a,
+.navbar a {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 38px;
+    padding: 6px 13px;
+
+    border-radius: 9px;
+
+    color: #d3e1dc !important;
+    text-decoration: none;
+
+    font-weight: 650;
+    font-size: 0.92rem;
+
+    transition: 0.2s ease;
+}
+
+nav a:hover,
+.navbar a:hover {
+    background: rgba(200, 251, 93, 0.10);
+    color: var(--accent) !important;
+}
+
+/* ==========================================================
+   FORMULARIOS: LOGIN, REGISTRO Y CANCIONES
+   ========================================================== */
+
+form {
+    width: min(100%, 610px);
+
+    margin: 26px 0 28px;
+    padding: clamp(22px, 4vw, 35px);
+
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+
+    background: linear-gradient(
+        165deg,
+        rgba(31, 49, 50, 0.94),
+        rgba(14, 26, 28, 0.98)
+    );
+
+    box-shadow: var(--shadow);
+}
+
+form p {
+    margin: 0 0 19px;
+}
+
+form p:last-child {
+    margin-bottom: 0;
+}
+
+label {
+    display: inline-block;
+
+    margin: 0 0 8px;
+
+    color: #dce9e4 !important;
+
+    font-weight: 650;
+    font-size: 0.91rem;
+}
+
+/* Campos de entrada */
+
+input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+select,
+textarea {
+    display: block;
+
+    width: 100%;
+    min-height: 47px;
+
+    margin: 3px 0 7px;
+    padding: 11px 14px;
+
+    border: 1px solid #3a5053;
+    border-radius: var(--radius-sm);
+
+    outline: none;
+
+    background: #0b1517 !important;
+    color: var(--text) !important;
+
+    font: inherit;
+    font-size: 0.96rem;
+
+    transition:
+        border-color 0.2s,
+        background 0.2s,
+        box-shadow 0.2s;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #859b96;
+}
+
+/* Efecto al seleccionar */
+
+input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent);
+
+    background: #101d1a !important;
+
+    box-shadow: 0 0 0 4px rgba(200, 251, 93, 0.12);
+}
+
+select {
+    cursor: pointer;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: var(--accent);
+}
+
+/* ==========================================================
+   BOTONES
+   ========================================================== */
+
+button,
+.btn,
+a.button,
+input[type="submit"],
+input[type="button"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 46px;
+    padding: 10px 23px;
+
+    border: 1px solid transparent;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        120deg,
+        #d9ff8b,
+        #b6ef50
+    ) !important;
+
+    color: var(--accent-ink) !important;
+
+    font: inherit;
+    font-weight: 800;
+    font-size: 0.9rem;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    box-shadow: 0 8px 26px rgba(177, 243, 69, 0.13);
+
+    transition:
+        transform 0.18s,
+        box-shadow 0.18s,
+        background 0.18s;
+}
+
+button:hover,
+.btn:hover,
+a.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+    transform: translateY(-2px);
+
+    background: linear-gradient(
+        120deg,
+        #e8ffad,
+        #c8fb5d
+    ) !important;
+
+    color: var(--accent-ink) !important;
+
+    box-shadow: 0 12px 31px rgba(177, 243, 69, 0.22);
+}
+
+button:active,
+.btn:active {
+    transform: translateY(0);
+}
+
+button:disabled,
+input:disabled,
+select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Accesibilidad */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 3px;
+}
+
+/* ==========================================================
+   BOTÓN DE CERRAR SESIÓN
+   ========================================================== */
+
+form[action$="logout.php"] {
+    display: inline-block;
+
+    width: auto;
+    max-width: 100%;
+
+    padding: 0;
+    margin: 8px 0 30px;
+
+    border: none;
+    background: transparent !important;
+
+    box-shadow: none;
+}
+
+form[action$="logout.php"] button {
+    background: #1c3032 !important;
+
+    border-color: #385255;
+
+    color: #e3efea !important;
+
+    box-shadow: none;
+}
+
+form[action$="logout.php"] button:hover {
+    background: #274044 !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================================
+   CATÁLOGO Y TARJETAS DE CANCIONES
+   ========================================================== */
+
+article,
+.song,
+.song-card,
+.track-card,
+.card,
+.panel,
+section {
+    position: relative;
+    overflow: hidden;
+
+    margin: 20px 0;
+    padding: clamp(24px, 3.8vw, 36px);
+
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+
+    background: linear-gradient(
+        145deg,
+        #192629,
+        #111b1e
+    );
+
+    box-shadow: var(--shadow);
+}
+
+/* Ficha individual */
+
+article {
+    min-height: 190px;
+    padding-left: 110px;
+
+    transition:
+        border-color 0.22s,
+        transform 0.22s,
+        box-shadow 0.22s;
+}
+
+/* Icono decorativo musical */
+
+article::before {
+    content: "♫";
+
+    position: absolute;
+    top: 31px;
+    left: 26px;
+
+    display: grid;
+    place-items: center;
+
+    width: 61px;
+    height: 61px;
+
+    border: 1px solid rgba(200, 251, 93, 0.30);
+    border-radius: 17px;
+
+    background: radial-gradient(
+        circle at 15% 12%,
+        #36513a,
+        #1b302a
+    );
+
+    color: var(--accent);
+    font-size: 1.7rem;
+}
+
+article:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(200, 251, 93, 0.50);
+
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.30);
+}
+
+article h2,
+.song-card h2 {
+    margin: 0 0 13px;
+}
+
+article p {
+    margin-bottom: 8px;
+}
+
+article a {
+    font-weight: 700;
+}
+
+article hr {
+    height: 1px;
+    margin: 22px 0 0;
+
+    border: none;
+    background: var(--line);
+}
+
+/* ==========================================================
+   REPRODUCTOR JUKEBOX
+   ========================================================== */
+
+#jukebox-player,
+#player,
+.player,
+.reproductor {
+    min-height: 230px;
+
+    padding-right: clamp(26px, 27%, 300px);
+
+    background:
+        radial-gradient(
+            circle at 85% 40%,
+            rgba(200, 251, 93, 0.14),
+            transparent 38%
+        ),
+        linear-gradient(
+            125deg,
+            #1a2929,
+            #0d1919
+        ) !important;
+
+    border-color: rgba(200, 251, 93, 0.25);
+}
+
+/* Disco de vinilo decorativo */
+
+#jukebox-player::after {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    top: 50%;
+    right: clamp(18px, 7%, 85px);
+
+    width: 160px;
+    aspect-ratio: 1;
+
+    transform: translateY(-50%);
+
+    border: 1px solid rgba(210, 255, 121, 0.30);
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #c8fb5d 0 5px,
+            #213331 6px 17px,
+            transparent 18px
+        ),
+        repeating-radial-gradient(
+            circle,
+            #122322 0 5px,
+            #273737 6px 7px,
+            #102020 8px 12px
+        );
+
+    box-shadow:
+        0 0 50px rgba(187, 255, 90, 0.10),
+        inset 0 0 35px rgba(0, 0, 0, 0.50);
+
+    opacity: 0.83;
+    pointer-events: none;
+}
+
+#jukebox-player > *,
+#player > *,
+.player > *,
+.reproductor > * {
+    position: relative;
+    z-index: 1;
+}
+
+#jukebox-player h2 {
+    color: var(--accent) !important;
+}
+
+#jukebox-player p {
+    color: var(--text-soft) !important;
+}
+
+#jukebox-player code {
+    overflow-wrap: anywhere;
+}
+
+/* Visualizador */
+
+canvas,
+#equalizer {
+    display: block;
+
+    width: 100%;
+    max-width: 720px;
+    min-height: 70px;
+
+    margin: 18px 0 10px;
+
+    border: 1px solid #2e4b3d;
+    border-radius: 11px;
+
+    background: #07120f;
+}
+
+audio {
+    width: min(100%, 720px);
+    accent-color: var(--accent);
+}
+
+/* ==========================================================
+   ELIMINAR CANCIONES
+   ========================================================== */
+
+form[action*="eliminar"] button,
+.btn-danger,
+.danger {
+    background: linear-gradient(
+        120deg,
+        #ff9aa9,
+        #ff7489
+    ) !important;
+
+    color: #270b10 !important;
+
+    box-shadow: 0 8px 25px rgba(255, 116, 137, 0.12);
+}
+
+form[action*="eliminar"] button:hover,
+.btn-danger:hover,
+.danger:hover {
+    background: #ffb3be !important;
+    color: #270b10 !important;
+}
+
+/* ==========================================================
+   MENSAJES DE ERROR Y ÉXITO
+   ========================================================== */
+
+[role="alert"],
+.error,
+.alert-error {
+    padding: 14px 17px;
+    margin: 18px 0;
+
+    border: 1px solid rgba(255, 132, 150, 0.45);
+    border-radius: 12px;
+
+    background: rgba(133, 36, 56, 0.20);
+
+    color: #ffbdc8 !important;
+}
+
+.success,
+.alert-success {
+    padding: 14px 17px;
+    margin: 18px 0;
+
+    border: 1px solid rgba(200, 251, 93, 0.28);
+    border-radius: 12px;
+
+    background: rgba(200, 251, 93, 0.08);
+
+    color: #deff9a !important;
+}
+
+/* ==========================================================
+   TABLAS Y CÓDIGO
+   ========================================================== */
+
+table {
+    width: 100%;
+
+    margin: 24px 0;
+
+    border-collapse: collapse;
+    overflow-wrap: anywhere;
+}
+
+th,
+td {
+    padding: 14px;
+
+    text-align: left;
+
+    border-bottom: 1px solid var(--line);
+}
+
+th {
+    color: var(--accent);
+
+    background: rgba(200, 251, 93, 0.055);
+}
+
+td {
+    color: var(--text-soft);
+}
+
+code,
+pre {
+    border: 1px solid rgba(150, 220, 166, 0.12);
+    border-radius: 8px;
+
+    background: #0b1716;
+    color: #d8ff9e;
+}
+
+code {
+    padding: 2px 6px;
+    font-size: 0.91em;
+}
+
+pre {
+    max-width: 100%;
+
+    overflow: auto;
+    padding: 17px;
+}
+
+hr {
+    height: 1px;
+
+    border: none;
+    background: var(--line);
+
+    margin: 30px 0;
+}
+
+/* ==========================================================
+   RESPONSIVE: TABLETS Y MÓVILES
+   ========================================================== */
+
+@media (max-width: 760px) {
+
+    body {
+        width: calc(100% - 32px);
+        padding-bottom: 65px;
+    }
+
+    body::before {
+        min-height: 74px;
+        margin-bottom: 22px;
+
+        font-size: 0.68rem;
+        letter-spacing: 0.13em;
+    }
+
+    nav,
+    .navbar {
+        margin-bottom: 27px;
+        padding: 10px;
+
+        gap: 4px;
+    }
+
+    nav a,
+    .navbar a {
+        padding: 7px 9px;
+        font-size: 0.85rem;
+    }
+
+    article {
+        min-height: 0;
+        padding: 90px 22px 24px;
+    }
+
+    article::before {
+        top: 20px;
+        left: 22px;
+
+        width: 51px;
+        height: 51px;
+    }
+
+    form,
+    article,
+    section,
+    .card,
+    .panel {
+        border-radius: 15px;
+    }
+
+    #jukebox-player,
+    #player,
+    .player,
+    .reproductor {
+        padding-right: 24px;
+    }
+
+    #jukebox-player::after {
+        width: 100px;
+
+        right: -28px;
+        top: 45px;
+
+        opacity: 0.25;
+    }
+}
+
+@media (max-width: 430px) {
+
+    body {
+        width: calc(100% - 24px);
+    }
+
+    h1 {
+        font-size: 2.15rem;
+    }
+
+    form,
+    section,
+    .card,
+    .panel {
+        padding: 22px 18px;
+    }
+
+    button,
+    .btn,
+    input[type="submit"] {
+        width: 100%;
+    }
+
+    form[action$="logout.php"] button {
+        width: auto;
+    }
+}
+
+/* ==========================================================
+   ACCESIBILIDAD: MOVIMIENTO REDUCIDO
+   ========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
